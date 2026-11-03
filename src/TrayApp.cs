@@ -28,6 +28,7 @@ namespace AutoReady
         string updateMessage;
 
         volatile bool paused;
+        DateTime lastUrgent = DateTime.MinValue;   // ultimo aviso urgente (ver UrgentAllowed)
         volatile bool pausedForSafety;   // la pausa la puso la app (no se sabia si habia partida), no el usuario
         volatile bool installWhenIdle;   // actualizacion automatica esperando el menu (o que se cierre el juego)
         volatile bool running = true;
@@ -153,6 +154,14 @@ namespace AutoReady
             PushStatus();
         }
 
+        public void SetNotifyOnly(bool on)
+        {
+            cfg.NotifyOnly = on;
+            cfg.Save();
+            Log.Write(on ? "Modo solo avisar: encendido" : "Modo solo avisar: apagado");
+            PushStatus();
+        }
+
         public void SetPhone(bool on)
         {
             cfg.NotifyPhone = on;
@@ -264,6 +273,7 @@ namespace AutoReady
                 UpdateTag = pendingUpdate != null ? pendingUpdate.Tag : null,
                 UpdateMessage = updateMessage,
                 CanUpdate = CanUpdateNow(),
+                AcceptedTotal = cfg.AcceptedTotal,
             };
             st.ProtectionFix = MissingProtection();
             ui.Post(() =>
@@ -425,9 +435,40 @@ namespace AutoReady
         public DateTime LastAccept { get { return lastAccept; } }
         public void ForgetLastAccept() { lastAccept = DateTime.MinValue; }
 
+        // Los avisos urgentes (no pude aceptar / hay que aceptar a mano) no se repiten mas de una vez cada 20 s: el popup
+        // sigue en pantalla y se lo vuelve a ver en cada vuelta.
+        bool UrgentAllowed()
+        {
+            DateTime now = DateTime.Now;
+            if ((now - lastUrgent).TotalSeconds < 20) return false;
+            lastUrgent = now;
+            return true;
+        }
+
+        public void AcceptFailed(GameProfile game)
+        {
+            if (!UrgentAllowed()) return;
+            Log.Write(game.Name + ": vi el popup pero no pude aceptar: aviso urgente");
+            Notify(S.ToastFailTitle, S.ToastFailText(game.Name));
+            if (cfg.Sound) Sounds.Urgent();
+            Notifier.Phone(cfg, S.ToastFailTitle, S.ToastFailText(game.Name), "rotating_light", true);
+        }
+
+        public void MatchFound(GameProfile game)
+        {
+            if (!UrgentAllowed()) return;
+            Log.Write(game.Name + ": partida encontrada (solo aviso, la acepta la persona)");
+            Notify(S.ToastFoundTitle(game.Name), S.ToastFoundText);
+            if (cfg.Sound) Sounds.Urgent();
+            Notifier.Phone(cfg, S.ToastFoundTitle(game.Name), S.ToastFoundText, "bell", true);
+        }
+
         public void MatchAccepted(GameProfile game, string how, Action onClick = null)
         {
             lastAccept = DateTime.Now;
+            cfg.AcceptedTotal++;
+            cfg.Save();
+            PushStatus();
             Log.Write(game.Name + ": partida encontrada, aceptada " + how);
             Notify(S.ToastAccepted, S.ToastAcceptedText(game.Name), null, null, onClick);
             if (cfg.Sound) Beep(true);

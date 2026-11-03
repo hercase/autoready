@@ -25,6 +25,7 @@ namespace AutoReady
         public string UpdateMessage;   // resultado de "Buscar actualizaciones"
         public bool CanUpdate;         // false buscando partida o en partida: el boton Actualizar queda apagado
         public GameProfile ProtectionFix;   // juego al que le falta la opcion de lanzamiento (null = todo bien)
+        public int AcceptedTotal;      // partidas aceptadas hasta ahora
     }
 
     // Lo que el panel puede pedirle a la app. Cada cambio se aplica al instante (sin boton Guardar).
@@ -33,6 +34,7 @@ namespace AutoReady
         Config Cfg { get; }
         void SetPaused(bool paused);
         void SetPhone(bool on);
+        void SetNotifyOnly(bool on);
         void FixProtection(GameProfile game);
         // Opciones de lanzamiento actuales del juego + la que falta, listas para reemplazar sin perder nada.
         string LaunchOptionsWithProtection(GameProfile game);
@@ -57,7 +59,7 @@ namespace AutoReady
 
         readonly IPanelHost host;
         readonly Theme theme;
-        TextBlock statusText, versionTitle, versionState;
+        TextBlock statusText, versionTitle, versionState, acceptedCount;
         Ellipse statusDot;
         Toggle acceptToggle, phoneToggle;
         StackPanel phoneDetails, moreBox;
@@ -251,6 +253,7 @@ namespace AutoReady
             if (statusText.Text != st.Text) { statusText.Text = st.Text; Announce(statusText); }
             statusDot.Fill = st.Kind == StatusKind.Watching ? theme.Good : st.Kind == StatusKind.Paused ? theme.Paused : theme.Idle;
             acceptToggle.IsOn = !st.Paused;
+            acceptedCount.Text = st.AcceptedTotal.ToString();
 
             bool hasUpdate = st.UpdateTag != null;
             updateBar.Visibility = hasUpdate ? Visibility.Visible : Visibility.Collapsed;
@@ -374,6 +377,14 @@ namespace AutoReady
             Toggle autoUpdate = new Toggle(theme, host.Cfg.AutoUpdateCheck, S.AutoUpdate);
             autoUpdate.Changed += on => host.SetAutoUpdate(on);
             moreBox.Children.Add(Row(Texts(S.AutoUpdate, null), autoUpdate));
+            moreBox.Children.Add(Divider());
+            Toggle notifyOnly = new Toggle(theme, host.Cfg.NotifyOnly, S.NotifyOnlyTitle);
+            notifyOnly.Changed += on => host.SetNotifyOnly(on);
+            moreBox.Children.Add(Row(Texts(S.NotifyOnlyTitle, S.NotifyOnlyHint), notifyOnly));
+            moreBox.Children.Add(Divider());
+            acceptedCount = new TextBlock { Text = host.Cfg.AcceptedTotal.ToString(), Foreground = theme.TextSecondary };
+            AutomationProperties.SetName(acceptedCount, S.AcceptedCount);
+            moreBox.Children.Add(Row(Texts(S.AcceptedCount, null), acceptedCount));
             moreBox.Children.Add(Divider());
             StackPanel versionTexts = Texts(S.Version(Updater.CurrentVersionText), "");
             versionTitle = (TextBlock)versionTexts.Children[0];

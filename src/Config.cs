@@ -36,6 +36,8 @@ namespace AutoReady
         public string Language = "auto";   // auto (idioma de Windows), es o en; lo lee Lang al arrancar
         public bool Welcomed = false;  // la primera vez se abre el panel solo
         public bool SaveSamples = true; // beta: guarda capturas reales para ajustar el detector (ver Samples.cs)
+        public bool NotifyOnly = false; // solo avisar que hay partida: no se hace click ni se manda nada, acepta la persona
+        public int AcceptedTotal = 0;   // partidas que AutoReady acepto (se muestra en el panel)
 
         public readonly Dictionary<string, GameSettings> Games = new Dictionary<string, GameSettings>();
 
@@ -81,6 +83,8 @@ namespace AutoReady
                 c.Language = Str(kv, "Language", c.Language);
                 c.Welcomed = Bool(kv, "Welcomed", c.Welcomed);
                 c.SaveSamples = Bool(kv, "SaveSamples", c.SaveSamples);
+                c.NotifyOnly = Bool(kv, "NotifyOnly", c.NotifyOnly);
+                c.AcceptedTotal = Math.Max(0, Int(kv, "AcceptedTotal", c.AcceptedTotal));
 
                 foreach (GameProfile g in GameProfile.All)
                 {
@@ -147,6 +151,8 @@ namespace AutoReady
             lines.Add("Language=" + Language);
             lines.Add("Welcomed=" + Welcomed);
             lines.Add("SaveSamples=" + SaveSamples);
+            lines.Add("NotifyOnly=" + NotifyOnly);
+            lines.Add("AcceptedTotal=" + AcceptedTotal);
             foreach (GameProfile g in GameProfile.All)
             {
                 string p = g.Id + ".";

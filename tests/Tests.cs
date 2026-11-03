@@ -30,6 +30,7 @@ namespace AutoReady.Tests
             Group("Que hacer en cada vuelta", ScanPlanTests);
             Group("Pausa por seguridad", SafetyPauseTests);
             Group("Despues de aceptar", PostAcceptGateTests);
+            Group("Solo avisar", NotifyOnlyTests);
             Group("Estado de Steam", PresenceTests);
             Group("Opciones de lanzamiento de Steam", SteamConfigTests);
             Group("Codigo del celular", TopicTests);
@@ -337,6 +338,7 @@ namespace AutoReady.Tests
             public Config Cfg { get { return C; } }
             public void SetPaused(bool paused) { }
             public void SetPhone(bool on) { }
+            public void SetNotifyOnly(bool on) { }
             public void FixProtection(GameProfile game) { }
             public string LaunchOptionsWithProtection(GameProfile game) { return ""; }
             public void SendTestPush(Action<bool> done) { }
@@ -513,6 +515,31 @@ namespace AutoReady.Tests
             finally { try { Directory.Delete(dir, true); } catch { } }
         }
 
+        // ---------- solo avisar ----------
+
+        // Con "solo avisar" no se acepta nada: se avisa y la acepta la persona. Apagado, vuelve a aceptar solo.
+        static void NotifyOnlyTests()
+        {
+            FakeLeague fake = new FakeLeague();
+            FakeHost host = new FakeHost();
+            Lcu lcu = new Lcu(() => fake.Lockfile);
+            ClientApiStrategy s = new ClientApiStrategy(GameProfile.League, host, lcu);
+            s.Reset();
+            fake.Phase = "ReadyCheck";
+
+            host.Cfg.NotifyOnly = true;
+            s.Tick();
+            Check(fake.Accepts == 0 && host.Accepted == 0 && host.Found == 1, "solo avisar: avisa y no acepta");
+
+            host.Cfg.NotifyOnly = false;
+            s.Tick();
+            Check(fake.Accepts == 1 && host.Accepted == 1, "sin solo avisar: acepta");
+
+            Config d = Config.Defaults();
+            Check(!d.NotifyOnly && d.AcceptedTotal == 0, "de fabrica: acepta solo y el contador en cero");
+            Check(S.NotifyOnlyTitle.Length > 0 && S.ToastFailText("Dota 2").Contains("Dota 2") && S.ToastFoundTitle("CS2").Contains("CS2"), "textos de los avisos nuevos");
+        }
+
         // ---------- League of Legends ----------
 
         // La estrategia de LoL contra un cliente falso: acepta una sola vez, nunca en pausa ni en seleccion de campeones,
@@ -611,7 +638,10 @@ namespace AutoReady.Tests
         public void PauseForSafety() { Paused = true; }
         public void SetState(AppState state) { State = state; }
         public void Notify(string title, string text, string button = null, Action onButton = null, Action onClick = null) { }
+        public int Found, Failed;
         public void MatchAccepted(GameProfile game, string how, Action onClick = null) { Accepted++; lastAccept = DateTime.Now; }
+        public void AcceptFailed(GameProfile game) { Failed++; }
+        public void MatchFound(GameProfile game) { Found++; }
         public void MatchStateChanged(GameProfile game, string oldState, string newState) { Changes.Add((oldState ?? "") + "->" + (newState ?? "")); }
         public DateTime LastAccept { get { return lastAccept; } }
         public void ForgetLastAccept() { lastAccept = DateTime.MinValue; }

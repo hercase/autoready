@@ -71,7 +71,8 @@ Click the icon to open the panel:
 - **Pause hotkey:** pick a key (F1–F12 or a combination) to pause and resume from anywhere, even mid-game.
 - **Phone notifications:** scan the QR code with your phone camera. A [short page](https://hercase.github.io/autoready/phone/) walks you through connecting the free [ntfy](https://ntfy.sh) app (one tap on Android, copy and paste on iPhone).
 - **Updates:** when a new version is out, the panel shows an **Update** button. It stays disabled while you're searching for a match or playing, so an update never interrupts you. With automatic updates on, it installs itself once you're back at the menu.
-- **More options:** start with Windows, automatic updates and the current version.
+- **Urgent alert:** if AutoReady sees the popup but can't accept it, it sounds a loud alert on your PC and phone so you can go back right away.
+- **More options:** start with Windows, automatic updates, **Notify only** (it tells you when a match pops and never clicks, so you accept it yourself), how many matches it has accepted, and the current version.
 
 Right-click the icon for **Pause/Resume** and **Exit**. The icon turns gray while paused.
 AutoReady is meant to stay on: a pause lasts until you resume it or close the game.

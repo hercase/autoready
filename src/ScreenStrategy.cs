@@ -240,6 +240,14 @@ namespace AutoReady
                 lastBusySkip = DateTime.Now;
                 return 500;
             }
+            // Solo avisar: no se toca nada. El mismo popup sigue en pantalla, asi que no se vuelve a avisar hasta que desaparezca.
+            if (Cfg.NotifyOnly)
+            {
+                if (MustStop()) return 500;
+                afterAccept.Accepted(DateTime.Now);
+                Host.MatchFound(Game);
+                return 500;
+            }
             if (Accept(hit, safe) && decisive != null)
                 Samples.Accepted(decisive, Game, Detector.Roi(decisive.Width, decisive.Height, Cfg.For(Game).Detector));
             return 500;
@@ -281,6 +289,7 @@ namespace AutoReady
             if (Win32.GetForegroundWindow() != hwnd)
             {
                 Log.Write(Game.Name + ": popup detectado, pero no pude traer el juego al frente; no toco nada");
+                Host.AcceptFailed(Game);
                 return false;
             }
             if (MustStop()) return false;
@@ -304,7 +313,11 @@ namespace AutoReady
                 else how = !MustStop() && ClickButton(still) ? "con click (el Enter no alcanzo)" : null;
             }
             else how = ClickButton(confirmed) ? "con click" : null;
-            if (how == null) return false;   // el click se cancelo: no se cuenta como aceptada
+            if (how == null)   // el click se cancelo: no se cuenta como aceptada
+            {
+                Host.AcceptFailed(Game);
+                return false;
+            }
 
             StartCooldown();
             afterAccept.Accepted(DateTime.Now);

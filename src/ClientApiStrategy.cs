@@ -62,7 +62,8 @@ namespace AutoReady
             if (now != "ReadyCheck" || InCooldown) return 1000;
             if (!lcu.ReadyCheckPending()) return 500;   // ya la acepto (o la rechazo) el jugador
             if (Host.Paused) return 500;                 // se pudo pausar mientras se consultaba
-            if (!lcu.Accept()) { Log.Write(Game.Name + ": no pude aceptar por la API del cliente"); return 500; }
+            if (Cfg.NotifyOnly) { Host.MatchFound(Game); return 1000; }   // solo avisar: lo acepta la persona
+            if (!lcu.Accept()) { Log.Write(Game.Name + ": no pude aceptar por la API del cliente"); Host.AcceptFailed(Game); return 500; }
             StartCooldown();
             Host.MatchAccepted(Game, "por la API del cliente");
             return 1000;

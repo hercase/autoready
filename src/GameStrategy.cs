@@ -16,6 +16,10 @@ namespace AutoReady
         void Notify(string title, string text, string button = null, Action onButton = null, Action onClick = null);
         // Se acepto una partida (anota la hora, suena, avisa en la PC y el celular). onClick: que hace tocar el aviso.
         void MatchAccepted(GameProfile game, string how, Action onClick = null);
+        // Se vio el popup pero no se pudo aceptar (el juego no paso al frente, el click se cancelo): aviso urgente.
+        void AcceptFailed(GameProfile game);
+        // Modo "solo avisar": hay un popup para aceptar y no se toca nada; se avisa a la PC y al celular.
+        void MatchFound(GameProfile game);
         // Empezo (newState != null y oldState == null) o termino (newState == null) una partida.
         void MatchStateChanged(GameProfile game, string oldState, string newState);
         // Ultima vez que se acepto una partida en esta sesion de juego (MinValue = ninguna o ya empezo la partida).

@@ -79,6 +79,13 @@ namespace AutoReady
         public static string ToastPaused { get { return T("En pausa", "Paused"); } }
         public static string ToastPausedText(string key) { return string.Format(T("AutoReady no acepta partidas hasta que vuelvas a apretar {0} o cierres el juego.", "AutoReady won't accept matches until you press {0} again or close the game."), key); }
         public static string ToastResume { get { return T("Reanudar", "Resume"); } }
+        public static string NotifyOnlyTitle { get { return T("Solo avisar, no aceptar", "Notify only, don't accept"); } }
+        public static string NotifyOnlyHint { get { return T("Te avisamos que apareció la partida y la aceptás vos.", "We tell you a match popped up and you accept it yourself."); } }
+        public static string AcceptedCount { get { return T("Partidas aceptadas", "Matches accepted"); } }
+        public static string ToastFailTitle { get { return T("No pude aceptar tu partida", "I couldn't accept your match"); } }
+        public static string ToastFailText(string game) { return string.Format(T("Volvé a {0} ya y aceptala vos.", "Go back to {0} now and accept it yourself."), game); }
+        public static string ToastFoundTitle(string game) { return string.Format(T("Partida encontrada en {0}", "Match found in {0}"), game); }
+        public static string ToastFoundText { get { return T("Aceptala ahora.", "Accept it now."); } }
         public static string ToastAccepted { get { return T("Partida aceptada", "Match accepted"); } }
         public static string ToastAcceptedText(string game) { return string.Format(T("Volvé a la PC. Tu partida de {0} arranca cuando todos acepten.", "Come back to your PC. Your {0} match starts once everyone accepts."), game); }
         public static string ToastStarted(string game) { return string.Format(T("Arrancó tu partida de {0}", "Your {0} match started"), game); }

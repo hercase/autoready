@@ -20,6 +20,9 @@ namespace AutoReady
         // Empezo la partida: arpegio mayor do-mi-sol.
         public static void MatchStarted() { Play(new double[][] { Note(523.25, 0, 450), Note(659.25, 130, 450), Note(783.99, 260, 700) }, 1000); }
 
+        // Urgente (no pudo aceptar, o hay que aceptar a mano): la misma nota aguda tres veces, mas insistente que el resto.
+        public static void Urgent() { Play(new double[][] { Note(987.77, 0, 220), Note(987.77, 260, 220), Note(987.77, 520, 420) }, 1000); }
+
         // Pausa: sol -> do, bajando.
         public static void Paused() { Play(new double[][] { Note(783.99, 0, 400), Note(523.25, 150, 600) }, 750); }
 
