@@ -72,6 +72,7 @@ Click the icon to open the panel:
 - **Phone notifications:** scan the QR code with your phone camera. A [short page](https://hercase.github.io/autoready/phone/) walks you through connecting the free [ntfy](https://ntfy.sh) app (one tap on Android, copy and paste on iPhone).
 - **Updates:** when a new version is out, the panel shows an **Update** button. It stays disabled while you're searching for a match or playing, so an update never interrupts you. With automatic updates on, it installs itself once you're back at the menu.
 - **Urgent alert:** if AutoReady sees the popup but can't accept it, it sounds a loud alert on your PC and phone so you can go back right away.
+- **Tell friends on Discord:** in **More options**, so your party knows you're in. In Discord, open your server's channel → **Edit Channel → Integrations → Webhooks → New Webhook → Copy Webhook URL**, then click **Connect** in AutoReady (it reads the link from your clipboard). Each time it accepts a match, your friends get a message in that channel.
 - **More options:** start with Windows, automatic updates, **Notify only** (it tells you when a match pops and never clicks, so you accept it yourself), how many matches it has accepted, and the current version.
 
 Right-click the icon for **Pause/Resume** and **Exit**. The icon turns gray while paused.
@@ -156,7 +157,7 @@ download yourself:
   `gh attestation verify AutoReady.exe -R hercase/autoready`.
 
 **Privacy:** AutoReady has no accounts, analytics or telemetry. It only connects to GitHub (updates), Steam Community
-(your own Steam status) and ntfy (phone notifications, off by default), and each one can be turned off. See the
+(your own Steam status), ntfy (phone notifications) and Discord (friend alerts). The last two are off by default, and each one can be turned off. See the
 [privacy policy](PRIVACY.md).
 
 ## Status

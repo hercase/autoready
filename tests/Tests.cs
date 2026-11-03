@@ -339,6 +339,7 @@ namespace AutoReady.Tests
             public void SetPaused(bool paused) { }
             public void SetPhone(bool on) { }
             public void SetNotifyOnly(bool on) { }
+            public bool SetDiscord(string url) { return true; }
             public void FixProtection(GameProfile game) { }
             public string LaunchOptionsWithProtection(GameProfile game) { return ""; }
             public void SendTestPush(Action<bool> done) { }
@@ -535,8 +536,18 @@ namespace AutoReady.Tests
             s.Tick();
             Check(fake.Accepts == 1 && host.Accepted == 1, "sin solo avisar: acepta");
 
+            // Discord: solo se acepta un link de webhook de Discord (el portapapeles puede tener cualquier cosa).
+            Check(Notifier.IsDiscordWebhook("https://discord.com/api/webhooks/123456789012345678/AbC-d_E123"), "webhook de Discord valido");
+            Check(Notifier.IsDiscordWebhook("https://discordapp.com/api/v10/webhooks/123/abc"), "webhook con version de API");
+            Check(!Notifier.IsDiscordWebhook("http://discord.com/api/webhooks/123/abc") && !Notifier.IsDiscordWebhook("https://evil.example/api/webhooks/123/abc"), "no http y no otros dominios");
+            Check(!Notifier.IsDiscordWebhook("https://discord.com.evil.example/api/webhooks/123/abc") && !Notifier.IsDiscordWebhook("https://discord.com/api/webhooks/123/abc?x=1"), "ni dominios parecidos ni parametros");
+            Check(!Notifier.IsDiscordWebhook("") && !Notifier.IsDiscordWebhook(null) && !Notifier.IsDiscordWebhook("hola"), "vacio u otra cosa: no");
+            Check(Notifier.JsonString("a\"b\\c\ná") == "\"a\\\"b\\\\c\\u000a\\u00e1\"", "el texto va escapado como JSON");
+            Check(S.DiscordAccepted("Dota 2", "").Contains("Dota 2") && !S.DiscordAccepted("Dota 2", "").Contains("{") && S.DiscordAccepted("Dota 2", "Keis").Contains("Keis"), "aviso de Discord con y sin nombre");
+
             Config d = Config.Defaults();
             Check(!d.NotifyOnly && d.AcceptedTotal == 0, "de fabrica: acepta solo y el contador en cero");
+            Check(d.DiscordWebhook == "", "de fabrica: Discord apagado");
             Check(S.NotifyOnlyTitle.Length > 0 && S.ToastFailText("Dota 2").Contains("Dota 2") && S.ToastFoundTitle("CS2").Contains("CS2"), "textos de los avisos nuevos");
         }
 

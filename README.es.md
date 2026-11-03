@@ -72,6 +72,7 @@ Tocá el ícono para abrir el panel:
 - **Avisos al celular:** escaneá el QR con la cámara del celular. Una [página corta](https://hercase.github.io/autoready/phone/) te guía para conectar la app gratis [ntfy](https://ntfy.sh) (un toque en Android, copiar y pegar en iPhone).
 - **Actualizaciones:** cuando sale una versión nueva, el panel muestra un botón **Actualizar**. Queda apagado mientras buscás partida o estás jugando, así que una actualización nunca te interrumpe. Con las actualizaciones automáticas activadas, se instala sola cuando volvés al menú.
 - **Aviso urgente:** si AutoReady ve el aviso pero no puede aceptarlo, suena una alerta fuerte en la PC y en el celular para que vuelvas enseguida.
+- **Avisar en Discord:** en **Más opciones**, para que tu grupo sepa que ya estás adentro. En Discord, abrí el canal de tu servidor → **Editar canal → Integraciones → Webhooks → Nuevo webhook → Copiar URL del webhook**, y después tocá **Conectar** en AutoReady (lee el link del portapapeles). Cada vez que acepta una partida, tus amigos reciben un mensaje en ese canal.
 - **Más opciones:** iniciar con Windows, actualizaciones automáticas, **Solo avisar** (te avisa cuando aparece la partida y nunca hace click: la aceptás vos), cuántas partidas aceptó y la versión instalada.
 
 Con click derecho en el ícono tenés **Pausar/Reanudar** y **Salir**. El ícono se pone gris cuando está en pausa.
@@ -156,7 +157,7 @@ Mientras tanto, podés verificar cualquier descarga vos mismo:
   con `gh attestation verify AutoReady.exe -R hercase/autoready`.
 
 **Privacidad:** AutoReady no tiene cuentas, estadísticas ni telemetría. Solo se conecta a GitHub (actualizaciones), a
-la Comunidad de Steam (tu propio estado) y a ntfy (avisos al celular, apagado por defecto), y cada una se puede
+la Comunidad de Steam (tu propio estado), a ntfy (avisos al celular) y a Discord (avisos a tus amigos). Los dos últimos están apagados por defecto, y cada una se puede
 apagar. Ver la [política de privacidad](PRIVACY.md).
 
 ## Estado

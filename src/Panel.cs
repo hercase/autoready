@@ -35,6 +35,8 @@ namespace AutoReady
         void SetPaused(bool paused);
         void SetPhone(bool on);
         void SetNotifyOnly(bool on);
+        // Webhook de Discord (null = quitar). Devuelve false si el link no es de un webhook de Discord.
+        bool SetDiscord(string url);
         void FixProtection(GameProfile game);
         // Opciones de lanzamiento actuales del juego + la que falta, listas para reemplazar sin perder nada.
         string LaunchOptionsWithProtection(GameProfile game);
@@ -59,7 +61,8 @@ namespace AutoReady
 
         readonly IPanelHost host;
         readonly Theme theme;
-        TextBlock statusText, versionTitle, versionState, acceptedCount;
+        TextBlock statusText, versionTitle, versionState, acceptedCount, discordHint, discordLabel;
+        ClickArea discordButton;
         Ellipse statusDot;
         Toggle acceptToggle, phoneToggle;
         StackPanel phoneDetails, moreBox;
@@ -382,6 +385,14 @@ namespace AutoReady
             notifyOnly.Changed += on => host.SetNotifyOnly(on);
             moreBox.Children.Add(Row(Texts(S.NotifyOnlyTitle, S.NotifyOnlyHint), notifyOnly));
             moreBox.Children.Add(Divider());
+            // Discord: se copia el link de un webhook (Discord > Integraciones) y se toca Conectar; Quitar lo desconecta.
+            discordButton = ClickArea.Make(theme, S.DiscordConnect, OnDiscordClick, ButtonKind.Standard);
+            discordLabel = (TextBlock)discordButton.Child;
+            StackPanel discordTexts = Texts(S.DiscordTitle, S.DiscordHintOff);
+            discordHint = (TextBlock)discordTexts.Children[1];
+            moreBox.Children.Add(Row(discordTexts, discordButton));
+            moreBox.Children.Add(Divider());
+            UpdateDiscord(null);
             acceptedCount = new TextBlock { Text = host.Cfg.AcceptedTotal.ToString(), Foreground = theme.TextSecondary };
             AutomationProperties.SetName(acceptedCount, S.AcceptedCount);
             moreBox.Children.Add(Row(Texts(S.AcceptedCount, null), acceptedCount));
@@ -416,6 +427,23 @@ namespace AutoReady
                 Background = new SolidColorBrush(theme.Dark ? Color.FromRgb(0x14, 0x14, 0x18) : Color.FromRgb(0xEE, 0xEE, 0xEE)),
                 BorderBrush = new SolidColorBrush(theme.Dark ? Color.FromRgb(0x26, 0x26, 0x2C) : Color.FromRgb(0xE5, 0xE5, 0xE5)),
             };
+        }
+
+        void UpdateDiscord(string message)
+        {
+            bool on = Notifier.IsDiscordWebhook(host.Cfg.DiscordWebhook);
+            discordLabel.Text = on ? S.DiscordRemove : S.DiscordConnect;
+            AutomationProperties.SetName(discordButton, S.DiscordTitle + ", " + discordLabel.Text);
+            discordHint.Text = message ?? (on ? S.DiscordHintOn : S.DiscordHintOff);
+        }
+
+        void OnDiscordClick()
+        {
+            if (Notifier.IsDiscordWebhook(host.Cfg.DiscordWebhook)) { host.SetDiscord(null); UpdateDiscord(null); return; }
+            string link = null;
+            try { link = Clipboard.GetText().Trim(); } catch { }   // el portapapeles puede estar ocupado
+            if (host.SetDiscord(link)) UpdateDiscord(null);
+            else UpdateDiscord(S.DiscordBadLink);
         }
 
         void ToggleMore()

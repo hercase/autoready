@@ -154,6 +154,18 @@ namespace AutoReady
             PushStatus();
         }
 
+        // url null = quitar. Devuelve false si no es un webhook de Discord. Al conectar manda un mensaje de prueba.
+        public bool SetDiscord(string url)
+        {
+            if (url == null) { cfg.DiscordWebhook = ""; cfg.Save(); Log.Write("Discord: desconectado"); return true; }
+            if (!Notifier.IsDiscordWebhook(url)) return false;
+            cfg.DiscordWebhook = url;
+            cfg.Save();
+            Log.Write("Discord: conectado");
+            Notifier.SendDiscord(url, S.DiscordTest, null);
+            return true;
+        }
+
         public void SetNotifyOnly(bool on)
         {
             cfg.NotifyOnly = on;
@@ -473,6 +485,7 @@ namespace AutoReady
             Notify(S.ToastAccepted, S.ToastAcceptedText(game.Name), null, null, onClick);
             if (cfg.Sound) Beep(true);
             Notifier.Phone(cfg, S.ToastAccepted, S.ToastAcceptedText(game.Name), "video_game");
+            Notifier.Discord(cfg, S.DiscordAccepted(game.Name, cfg.DiscordName));
         }
 
         public void MatchStateChanged(GameProfile game, string oldState, string newState)
