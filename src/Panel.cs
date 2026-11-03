@@ -35,8 +35,6 @@ namespace AutoReady
         void SetPaused(bool paused);
         void SetPhone(bool on);
         void SetNotifyOnly(bool on);
-        // Campanita tambien por un cable de audio virtual (sale por el micro). Devuelve false si no hay cable.
-        bool SetMicSound(bool on);
         // Webhook de Discord (null = quitar). Devuelve false si el link no es de un webhook de Discord.
         bool SetDiscord(string url);
         void FixProtection(GameProfile game);
@@ -65,8 +63,6 @@ namespace AutoReady
         readonly Theme theme;
         TextBlock statusText, versionTitle, versionState, acceptedCount, discordHint, discordLabel;
         ClickArea discordButton;
-        Toggle micToggle;
-        TextBlock micHint;
         Ellipse statusDot;
         Toggle acceptToggle, phoneToggle;
         StackPanel phoneDetails, moreBox;
@@ -388,18 +384,6 @@ namespace AutoReady
             Toggle notifyOnly = new Toggle(theme, host.Cfg.NotifyOnly, S.NotifyOnlyTitle);
             notifyOnly.Changed += on => host.SetNotifyOnly(on);
             moreBox.Children.Add(Row(Texts(S.NotifyOnlyTitle, S.NotifyOnlyHint), notifyOnly));
-            moreBox.Children.Add(Divider());
-            // Sonido por el micro: la campanita tambien en un cable de audio virtual; sin cable, vuelve a apagarse y avisa.
-            micToggle = new Toggle(theme, host.Cfg.MicSound, S.MicSoundTitle);
-            StackPanel micTexts = Texts(S.MicSoundTitle, S.MicSoundHint);
-            micHint = (TextBlock)micTexts.Children[1];
-            micToggle.Changed += on =>
-            {
-                bool ok = host.SetMicSound(on);
-                if (on && !ok) { micToggle.IsOn = false; micHint.Text = S.MicSoundMissing; }
-                else micHint.Text = S.MicSoundHint;
-            };
-            moreBox.Children.Add(Row(micTexts, micToggle));
             moreBox.Children.Add(Divider());
             // Discord: se copia el link de un webhook (Discord > Integraciones) y se toca Conectar; Quitar lo desconecta.
             discordButton = ClickArea.Make(theme, S.DiscordConnect, OnDiscordClick, ButtonKind.Standard);

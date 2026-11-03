@@ -73,7 +73,6 @@ Tocá el ícono para abrir el panel:
 - **Actualizaciones:** cuando sale una versión nueva, el panel muestra un botón **Actualizar**. Queda apagado mientras buscás partida o estás jugando, así que una actualización nunca te interrumpe. Con las actualizaciones automáticas activadas, se instala sola cuando volvés al menú.
 - **Aviso urgente:** si AutoReady ve el aviso pero no puede aceptarlo, suena una alerta fuerte en la PC y en el celular para que vuelvas enseguida.
 - **Avisar en Discord:** en **Más opciones**, para que tu grupo sepa que ya estás adentro. En Discord, abrí el canal de tu servidor → **Editar canal → Integraciones → Webhooks → Nuevo webhook → Copiar URL del webhook**, y después tocá **Conectar** en AutoReady (lee el link del portapapeles). Cada vez que acepta una partida, tus amigos reciben un mensaje en ese canal.
-- **Sonido por el micrófono:** para que tus amigos del canal de voz escuchen la campanita de aceptada aunque te hayas ido. Necesita un cable de audio virtual gratis; los 4 pasos están en las [preguntas frecuentes](#preguntas-frecuentes).
 - **Más opciones:** iniciar con Windows, actualizaciones automáticas, **Solo avisar** (te avisa cuando aparece la partida y nunca hace click: la aceptás vos), cuántas partidas aceptó y la versión instalada.
 
 Con click derecho en el ícono tenés **Pausar/Reanudar** y **Salir**. El ícono se pone gris cuando está en pausa.
@@ -138,21 +137,6 @@ Debería, esté donde esté el juego. Todavía lo estamos probando con varios mo
 Durante la beta sí, para mejorar la detección: cuando acepta una partida, y cuando empieza una partida que no aceptó.
 Solo la ventana del juego, solo en tu PC (<code>%APPDATA%\AutoReady\samples</code>), y solo las últimas 15. No se sube
 nada. Se apagan con <code>SaveSamples=False</code> en <code>%APPDATA%\AutoReady\autoready.ini</code>.
-</details>
-
-<details>
-<summary><b>¿Mis amigos del canal de voz pueden escuchar que aceptó?</b></summary>
-<br>
-Sí, con un cable de audio virtual gratis ([VB-Cable](https://vb-audio.com/Cable/)). Windows no deja que ninguna app
-meta sonido en tu micrófono sin uno, así que es una configuración de una sola vez:
-<ol>
-  <li>Instalá VB-Cable y reiniciá la PC.</li>
-  <li><b>Configuración de sonido → Grabación</b> → tu micrófono → <b>Propiedades → Escuchar</b> → tildá <b>Escuchar este dispositivo</b> y elegí <b>CABLE Input</b> como dispositivo de reproducción.</li>
-  <li>En Discord (<b>Voz y video</b>), poné como dispositivo de entrada <b>CABLE Output</b>.</li>
-  <li>En AutoReady, <b>Más opciones → Sonido por el micrófono</b>. Toca una campanita de prueba para que lo verifiques.</li>
-</ol>
-Tu voz sigue pasando por el cable, y todos en el canal escuchan la misma campanita que vos cuando AutoReady acepta.
-Para volver atrás, poné de nuevo tu micrófono como entrada de Discord y apagá la opción.
 </details>
 
 <details>

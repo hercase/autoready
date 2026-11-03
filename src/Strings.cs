@@ -82,9 +82,6 @@ namespace AutoReady
         public static string NotifyOnlyTitle { get { return T("Solo avisar, no aceptar", "Notify only, don't accept"); } }
         public static string NotifyOnlyHint { get { return T("Te avisamos que apareció la partida y la aceptás vos.", "We tell you a match popped up and you accept it yourself."); } }
         public static string AcceptedCount { get { return T("Partidas aceptadas", "Matches accepted"); } }
-        public static string MicSoundTitle { get { return T("Sonido por el micrófono", "Sound through your mic"); } }
-        public static string MicSoundHint { get { return T("La campanita de aceptada también sale por tu cable de audio virtual, para que el canal de voz la escuche.", "The accepted chime also plays on your virtual audio cable, so your voice channel hears it."); } }
-        public static string MicSoundMissing { get { return T("No encontré un cable de audio virtual. Instalá VB-Cable (gratis) y probá de nuevo.", "I couldn't find a virtual audio cable. Install VB-Cable (free) and try again."); } }
         public static string DiscordTitle { get { return T("Avisar en Discord", "Tell friends on Discord"); } }
         public static string DiscordHintOff { get { return T("Copiá el link de un webhook de tu servidor y tocá Conectar.", "Copy a webhook link from your server and click Connect."); } }
         public static string DiscordHintOn { get { return T("Tus amigos reciben un mensaje cuando AutoReady acepta.", "Your friends get a message when AutoReady accepts."); } }
