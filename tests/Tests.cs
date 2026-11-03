@@ -29,6 +29,7 @@ namespace AutoReady.Tests
             Group("Perfiles de juegos", ProfileTests);
             Group("Que hacer en cada vuelta", ScanPlanTests);
             Group("Pausa por seguridad", SafetyPauseTests);
+            Group("Despues de aceptar", PostAcceptGateTests);
             Group("Estado de Steam", PresenceTests);
             Group("Opciones de lanzamiento de Steam", SteamConfigTests);
             Group("Codigo del celular", TopicTests);
@@ -172,6 +173,25 @@ namespace AutoReady.Tests
             // Sin usar el estado de Steam (apagado o juego sin estado): modo seguro normal.
             p = ScreenStrategy.Plan(false, false, false, false, inMatch, 700);
             Check(!p.Stop && p.Safe && p.Needed == 3 && p.IntervalMs == 700, "sin estado de Steam: modo seguro normal");
+        }
+
+        // Caso real: tras aceptar, la pantalla "esperando jugadores" muestra casilleros verdes y el detector los vio como
+        // el boton cuatro veces seguidas. No se reintenta hasta ver que el popup desaparecio.
+        static void PostAcceptGateTests()
+        {
+            DateTime t = DateTime.Now;
+            PostAcceptGate g = new PostAcceptGate();
+            Check(g.Allows(true, t), "sin aceptar antes: se puede actuar");
+            g.Accepted(t);
+            Check(!g.Allows(true, t.AddSeconds(5)) && !g.Allows(true, t.AddSeconds(7)), "recien aceptada: el mismo panel no se acepta de nuevo");
+            Check(!g.Allows(false, t.AddSeconds(9)) && !g.Allows(true, t.AddSeconds(11)), "una sola lectura sin boton no alcanza para volver a actuar");
+            Check(!g.Allows(false, t.AddSeconds(13)) && !g.Allows(false, t.AddSeconds(15)), "dos lecturas sin boton: el popup desaparecio");
+            Check(g.Allows(true, t.AddSeconds(30)), "una partida nueva (alguien no acepto, otra vez en cola) se acepta");
+            g.Accepted(t);
+            Check(!g.Allows(true, t.AddSeconds(PostAcceptGate.MaxWaitSec - 1)) && g.Allows(true, t.AddSeconds(PostAcceptGate.MaxWaitSec + 1)), "si nunca se ve el hueco, vuelve a actuar a los 2 minutos");
+            g.Accepted(t);
+            g.Reset();
+            Check(g.Allows(true, t), "al reiniciar la vigilancia se olvida la aceptacion");
         }
 
         // Caso real (modo custom): se acepto, la partida no se lleno, volviste al lobby y AutoReady quedo pausado "por

@@ -4,6 +4,37 @@ using System.Threading;
 
 namespace AutoReady
 {
+    // Despues de aceptar, la pantalla "esperando jugadores" sigue mostrando el mismo panel (en Dota, con casilleros verdes
+    // que el detector puede tomar por el boton). No se vuelve a aceptar hasta ver que el popup desaparecio: una
+    // partida nueva (alguien no acepto y volves a la cola) siempre pasa por una pantalla sin popup.
+    class PostAcceptGate
+    {
+        public const int MaxWaitSec = 120;   // por si nunca se ve el hueco (juego minimizado, captura fallida)
+        const int ClearScansNeeded = 2;
+
+        bool waiting;
+        int clearScans;
+        DateTime since;
+
+        public void Accepted(DateTime now) { waiting = true; clearScans = 0; since = now; }
+        public void Reset() { waiting = false; clearScans = 0; }
+
+        // true = se puede actuar sobre esta lectura. hit: el detector vio un boton.
+        public bool Allows(bool hit, DateTime now)
+        {
+            if (!waiting) return true;
+            if (!hit)
+            {
+                if (++clearScans >= ClearScansNeeded) waiting = false;
+                return false;
+            }
+            clearScans = 0;
+            if ((now - since).TotalSeconds < MaxWaitSec) return false;
+            waiting = false;
+            return true;
+        }
+    }
+
     // Juegos que se aceptan mirando la pantalla (Dota 2, CS2): captura de la ventana, detector del boton y click o Enter.
     // Para no tocar nada en partida usa, en este orden, GSI (oficial de Valve) y el estado de Steam; sin ninguno de los
     // dos entra en modo seguro (mas detecciones, nada de Enter, y nunca si estas usando el mouse o el teclado).
@@ -20,6 +51,7 @@ namespace AutoReady
         readonly StalePresence stalePresence = new StalePresence();
         volatile bool freshSession;   // el juego se abrio hace poco (ver StalePresence)
         bool wasGsiInMatch;
+        readonly PostAcceptGate afterAccept = new PostAcceptGate();
 
         public ScreenStrategy(GameProfile game, IGameHost host) : base(game, host) { }
 
@@ -37,6 +69,7 @@ namespace AutoReady
             openedAt = DateTime.Now;
             flashedWindow = IntPtr.Zero;   // un titileo de antes de vigilarlo no cuenta
             stalePresence.Reset();
+            afterAccept.Reset();
             wasGsiInMatch = false;
             freshSession = GameProcessAge() < StalePresence.FreshSession;
         }
@@ -182,6 +215,8 @@ namespace AutoReady
                 Samples.Remember(shot);
                 if (hit != null && consecutiveHits + 1 >= needed) decisive = new Bitmap(shot);
             }
+            // Recien aceptada: mientras el mismo panel siga en pantalla ("esperando jugadores") no se vuelve a actuar.
+            if (!afterAccept.Allows(hit != null, DateTime.Now)) { consecutiveHits = 0; return Math.Max(interval, 700); }
             if (hit == null) { consecutiveHits = 0; return interval; }
             using (decisive)
                 return Decide(hit, safe, needed, decisive);
@@ -272,6 +307,7 @@ namespace AutoReady
             if (how == null) return false;   // el click se cancelo: no se cuenta como aceptada
 
             StartCooldown();
+            afterAccept.Accepted(DateTime.Now);
             IntPtr window = hwnd;
             // Al tocar el aviso se trae el juego al frente (es lo que la persona quiere ver), no el panel.
             Host.MatchAccepted(Game, how, () => Win32.Focus(window));
