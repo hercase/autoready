@@ -82,19 +82,6 @@ namespace AutoReady
         public static string NotifyOnlyTitle { get { return T("Solo avisar, no aceptar", "Notify only, don't accept"); } }
         public static string NotifyOnlyHint { get { return T("Te avisamos que apareció la partida y la aceptás vos.", "We tell you a match popped up and you accept it yourself."); } }
         public static string AcceptedCount { get { return T("Partidas aceptadas", "Matches accepted"); } }
-        public static string DiscordTitle { get { return T("Avisar en Discord", "Tell friends on Discord"); } }
-        public static string DiscordHintOff { get { return T("Copiá el link de un webhook de tu servidor y tocá Conectar.", "Copy a webhook link from your server and click Connect."); } }
-        public static string DiscordHintOn { get { return T("Tus amigos reciben un mensaje cuando AutoReady acepta.", "Your friends get a message when AutoReady accepts."); } }
-        public static string DiscordBadLink { get { return T("Ese no es un link de webhook de Discord.", "That isn't a Discord webhook link."); } }
-        public static string DiscordConnect { get { return T("Conectar", "Connect"); } }
-        public static string DiscordRemove { get { return T("Quitar", "Remove"); } }
-        public static string DiscordTest { get { return T("AutoReady conectado: acá van a aparecer los avisos de partida.", "AutoReady connected: match alerts will show up here."); } }
-        public static string DiscordAccepted(string game, string name)
-        {
-            return string.IsNullOrEmpty(name)
-                ? string.Format(T("Partida de {0} aceptada. ¡A conectarse!", "{0} match accepted. Time to connect!"), game)
-                : string.Format(T("{1} aceptó la partida de {0}. ¡A conectarse!", "{1} accepted the {0} match. Time to connect!"), game, name);
-        }
         public static string ToastFailTitle { get { return T("No pude aceptar tu partida", "I couldn't accept your match"); } }
         public static string ToastFailText(string game) { return string.Format(T("Volvé a {0} ya y aceptala vos.", "Go back to {0} now and accept it yourself."), game); }
         public static string ToastFoundTitle(string game) { return string.Format(T("Partida encontrada en {0}", "Match found in {0}"), game); }
