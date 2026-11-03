@@ -154,18 +154,6 @@ namespace AutoReady
             PushStatus();
         }
 
-        // Encender toca la campanita una vez en el cable virtual (para probar el micro). Devuelve false si no hay cable.
-        public bool SetMicSound(bool on)
-        {
-            if (on && Sounds.FindCable() < 0) return false;
-            cfg.MicSound = on;
-            cfg.Save();
-            Log.Write(on ? "Sonido por el micro: encendido" : "Sonido por el micro: apagado");
-            if (on) Sounds.AcceptedToCable();
-            return true;
-        }
-
-
         public void SetNotifyOnly(bool on)
         {
             cfg.NotifyOnly = on;
@@ -484,7 +472,6 @@ namespace AutoReady
             Log.Write(game.Name + ": partida encontrada, aceptada " + how);
             Notify(S.ToastAccepted, S.ToastAcceptedText(game.Name), null, null, onClick);
             if (cfg.Sound) Beep(true);
-            if (cfg.MicSound) Sounds.AcceptedToCable();   // el canal de voz tambien la escucha (ver Sounds)
             Notifier.Phone(cfg, S.ToastAccepted, S.ToastAcceptedText(game.Name), "video_game");
         }
 

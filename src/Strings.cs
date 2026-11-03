@@ -82,9 +82,6 @@ namespace AutoReady
         public static string NotifyOnlyTitle { get { return T("Solo avisar, no aceptar", "Notify only, don't accept"); } }
         public static string NotifyOnlyHint { get { return T("Te avisamos que apareció la partida y la aceptás vos.", "We tell you a match popped up and you accept it yourself."); } }
         public static string AcceptedCount { get { return T("Partidas aceptadas", "Matches accepted"); } }
-        public static string MicSoundTitle { get { return T("Sonido por el micrófono", "Sound through your mic"); } }
-        public static string MicSoundHint { get { return T("La campanita de aceptada también sale por tu micrófono (vía un cable de audio virtual), así la oye quien te escucha en cualquier app de voz.", "The accepted chime also goes out through your microphone (via a virtual audio cable), so anyone listening to you in any voice app hears it."); } }
-        public static string MicSoundMissing { get { return T("No encontré un cable de audio virtual. Instalá VB-Cable (gratis) y probá de nuevo.", "I couldn't find a virtual audio cable. Install VB-Cable (free) and try again."); } }
         public static string ToastFailTitle { get { return T("No pude aceptar tu partida", "I couldn't accept your match"); } }
         public static string ToastFailText(string game) { return string.Format(T("Volvé a {0} ya y aceptala vos.", "Go back to {0} now and accept it yourself."), game); }
         public static string ToastFoundTitle(string game) { return string.Format(T("Partida encontrada en {0}", "Match found in {0}"), game); }

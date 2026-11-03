@@ -72,7 +72,6 @@ Tocá el ícono para abrir el panel:
 - **Avisos al celular:** escaneá el QR con la cámara del celular. Una [página corta](https://hercase.github.io/autoready/phone/) te guía para conectar la app gratis [ntfy](https://ntfy.sh) (un toque en Android, copiar y pegar en iPhone).
 - **Actualizaciones:** cuando sale una versión nueva, el panel muestra un botón **Actualizar**. Queda apagado mientras buscás partida o estás jugando, así que una actualización nunca te interrumpe. Con las actualizaciones automáticas activadas, se instala sola cuando volvés al menú.
 - **Aviso urgente:** si AutoReady ve el aviso pero no puede aceptarlo, suena una alerta fuerte en la PC y en el celular para que vuelvas enseguida.
-- **Sonido por el micrófono:** para que quien escuche tu micrófono (Discord, TeamSpeak, la voz del juego…) oiga la campanita de aceptada, aunque te hayas ido. Necesita un cable de audio virtual gratis; los 4 pasos están en las [preguntas frecuentes](#preguntas-frecuentes).
 - **Más opciones:** iniciar con Windows, actualizaciones automáticas, **Solo avisar** (te avisa cuando aparece la partida y nunca hace click: la aceptás vos), cuántas partidas aceptó y la versión instalada.
 
 Con click derecho en el ícono tenés **Pausar/Reanudar** y **Salir**. El ícono se pone gris cuando está en pausa.
@@ -137,21 +136,6 @@ Debería, esté donde esté el juego. Todavía lo estamos probando con varios mo
 Durante la beta sí, para mejorar la detección: cuando acepta una partida, y cuando empieza una partida que no aceptó.
 Solo la ventana del juego, solo en tu PC (<code>%APPDATA%\AutoReady\samples</code>), y solo las últimas 15. No se sube
 nada. Se apagan con <code>SaveSamples=False</code> en <code>%APPDATA%\AutoReady\autoready.ini</code>.
-</details>
-
-<details>
-<summary><b>¿La gente del chat de voz puede escuchar que aceptó?</b></summary>
-<br>
-Sí, en cualquier app que use tu micrófono, con un cable de audio virtual gratis ([VB-Cable](https://vb-audio.com/Cable/)). Windows no deja que ninguna app
-meta sonido en tu micrófono sin uno, así que es una configuración de una sola vez:
-<ol>
-  <li>Instalá VB-Cable y reiniciá la PC.</li>
-  <li><b>Configuración de sonido → Grabación</b> → tu micrófono → <b>Propiedades → Escuchar</b> → tildá <b>Escuchar este dispositivo</b> y elegí <b>CABLE Input</b> como dispositivo de reproducción.</li>
-  <li>En tu app de voz (por ejemplo Discord: <b>Voz y video</b>), poné como dispositivo de entrada <b>CABLE Output</b>.</li>
-  <li>En AutoReady, <b>Más opciones → Sonido por el micrófono</b>. Toca una campanita de prueba para que lo verifiques.</li>
-</ol>
-Tu voz sigue pasando por el cable, y todos en la llamada escuchan la misma campanita que vos cuando AutoReady acepta.
-Para volver atrás, poné de nuevo tu micrófono como entrada de esa app y apagá la opción.
 </details>
 
 <details>

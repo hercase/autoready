@@ -38,7 +38,6 @@ namespace AutoReady
         public bool SaveSamples = true; // beta: guarda capturas reales para ajustar el detector (ver Samples.cs)
         public bool NotifyOnly = false; // solo avisar que hay partida: no se hace click ni se manda nada, acepta la persona
         public int AcceptedTotal = 0;   // partidas que AutoReady acepto (se muestra en el panel)
-        public bool MicSound = false;   // tocar la campanita de aceptada tambien en un cable de audio virtual (sale por el micro)
 
         public readonly Dictionary<string, GameSettings> Games = new Dictionary<string, GameSettings>();
 
@@ -86,7 +85,6 @@ namespace AutoReady
                 c.SaveSamples = Bool(kv, "SaveSamples", c.SaveSamples);
                 c.NotifyOnly = Bool(kv, "NotifyOnly", c.NotifyOnly);
                 c.AcceptedTotal = Math.Max(0, Int(kv, "AcceptedTotal", c.AcceptedTotal));
-                c.MicSound = Bool(kv, "MicSound", c.MicSound);
 
                 foreach (GameProfile g in GameProfile.All)
                 {
@@ -155,7 +153,6 @@ namespace AutoReady
             lines.Add("SaveSamples=" + SaveSamples);
             lines.Add("NotifyOnly=" + NotifyOnly);
             lines.Add("AcceptedTotal=" + AcceptedTotal);
-            lines.Add("MicSound=" + MicSound);
             foreach (GameProfile g in GameProfile.All)
             {
                 string p = g.Id + ".";
