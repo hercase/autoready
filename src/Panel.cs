@@ -35,6 +35,8 @@ namespace AutoReady
         void SetPaused(bool paused);
         void SetPhone(bool on);
         void SetNotifyOnly(bool on);
+        // Campanita tambien por un cable de audio virtual (sale por el micro). Devuelve false si no hay cable.
+        bool SetMicSound(bool on);
         void FixProtection(GameProfile game);
         // Opciones de lanzamiento actuales del juego + la que falta, listas para reemplazar sin perder nada.
         string LaunchOptionsWithProtection(GameProfile game);
@@ -60,6 +62,8 @@ namespace AutoReady
         readonly IPanelHost host;
         readonly Theme theme;
         TextBlock statusText, versionTitle, versionState, acceptedCount;
+        Toggle micToggle;
+        TextBlock micHint;
         Ellipse statusDot;
         Toggle acceptToggle, phoneToggle;
         StackPanel phoneDetails, moreBox;
@@ -381,6 +385,18 @@ namespace AutoReady
             Toggle notifyOnly = new Toggle(theme, host.Cfg.NotifyOnly, S.NotifyOnlyTitle);
             notifyOnly.Changed += on => host.SetNotifyOnly(on);
             moreBox.Children.Add(Row(Texts(S.NotifyOnlyTitle, S.NotifyOnlyHint), notifyOnly));
+            moreBox.Children.Add(Divider());
+            // Sonido por el micro: la campanita tambien en un cable de audio virtual; sin cable, vuelve a apagarse y avisa.
+            micToggle = new Toggle(theme, host.Cfg.MicSound, S.MicSoundTitle);
+            StackPanel micTexts = Texts(S.MicSoundTitle, S.MicSoundHint);
+            micHint = (TextBlock)micTexts.Children[1];
+            micToggle.Changed += on =>
+            {
+                bool ok = host.SetMicSound(on);
+                if (on && !ok) { micToggle.IsOn = false; micHint.Text = S.MicSoundMissing; }
+                else micHint.Text = S.MicSoundHint;
+            };
+            moreBox.Children.Add(Row(micTexts, micToggle));
             moreBox.Children.Add(Divider());
             acceptedCount = new TextBlock { Text = host.Cfg.AcceptedTotal.ToString(), Foreground = theme.TextSecondary };
             AutomationProperties.SetName(acceptedCount, S.AcceptedCount);

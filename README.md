@@ -72,6 +72,7 @@ Click the icon to open the panel:
 - **Phone notifications:** scan the QR code with your phone camera. A [short page](https://hercase.github.io/autoready/phone/) walks you through connecting the free [ntfy](https://ntfy.sh) app (one tap on Android, copy and paste on iPhone).
 - **Updates:** when a new version is out, the panel shows an **Update** button. It stays disabled while you're searching for a match or playing, so an update never interrupts you. With automatic updates on, it installs itself once you're back at the menu.
 - **Urgent alert:** if AutoReady sees the popup but can't accept it, it sounds a loud alert on your PC and phone so you can go back right away.
+- **Sound through your mic:** so anyone who hears your microphone (Discord, TeamSpeak, in-game voice…) hears the accepted chime, even if you stepped away. It needs a free virtual audio cable; see the [FAQ](#faq) for the 4 steps.
 - **More options:** start with Windows, automatic updates, **Notify only** (it tells you when a match pops and never clicks, so you accept it yourself), how many matches it has accepted, and the current version.
 
 Right-click the icon for **Pause/Resume** and **Exit**. The icon turns gray while paused.
@@ -136,6 +137,21 @@ It should, wherever the game is. Multi-monitor setups are still being tested, so
 During the beta, yes, to improve detection: when it accepts a match, and when a match starts that it didn't accept.
 Only the game window, only on your PC (<code>%APPDATA%\AutoReady\samples</code>), and only the latest 15. Nothing is
 uploaded. Turn it off with <code>SaveSamples=False</code> in <code>%APPDATA%\AutoReady\autoready.ini</code>.
+</details>
+
+<details>
+<summary><b>Can the people on voice chat hear that it accepted?</b></summary>
+<br>
+Yes, in any app that uses your microphone, with a free virtual audio cable ([VB-Cable](https://vb-audio.com/Cable/)). Windows doesn't let any app play sound
+into your microphone without one, so this is a one-time setup:
+<ol>
+  <li>Install VB-Cable and restart your PC.</li>
+  <li><b>Sound settings → Recording</b> → your microphone → <b>Properties → Listen</b> → check <b>Listen to this device</b> and pick <b>CABLE Input</b> as the playback device.</li>
+  <li>In your voice app (for example Discord: <b>Voice &amp; Video</b>), set the input device to <b>CABLE Output</b>.</li>
+  <li>In AutoReady, <b>More options → Sound through your mic</b>. It plays a test chime so you can check it.</li>
+</ol>
+Your voice keeps going through the cable, and everyone on the call hears the same chime you do when AutoReady
+accepts. To go back, set the app's input back to your microphone and turn the option off.
 </details>
 
 <details>
