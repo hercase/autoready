@@ -152,8 +152,8 @@ namespace AutoReady
                 (DateTime.Now - Host.LastAccept).TotalSeconds > Cfg.FallbackScanSecAfterAccept)
             {
                 Host.ForgetLastAccept();
-                Host.SetPaused(true);
-                Host.Notify(S.ToastUnsureTitle, S.ToastUnsure(Game.Name), S.ToastResume, () => Host.SetPaused(false));
+                Host.PauseForSafety();
+                Host.Notify(S.ToastUnsureTitle, NeedsSetup() ? S.ToastUnsureSetup(Game.Name) : S.ToastUnsure, S.ToastResume, () => Host.SetPaused(false));
                 return 500;
             }
 

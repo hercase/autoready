@@ -84,7 +84,8 @@ namespace AutoReady
         public static string ToastStarted(string game) { return string.Format(T("Arrancó tu partida de {0}", "Your {0} match started"), game); }
         public static string ToastStartedText { get { return T("Volvé a la PC ya.", "Get back to your PC now."); } }
         public static string ToastUnsureTitle { get { return T("En pausa por seguridad", "Paused to be safe"); } }
-        public static string ToastUnsure(string game) { return string.Format(T("AutoReady no puede saber si arrancó tu partida. Tocá Reanudar cuando vuelvas a buscar. Configurá {0} para que no vuelva a pasar.", "AutoReady can't tell if your match started. Click Resume when you queue again. Set up {0} so this doesn't happen."), game); }
+        public static string ToastUnsure { get { return T("AutoReady no puede saber si arrancó tu partida. Sigue solo cuando vuelvas al menú o a buscar. También podés tocar Reanudar.", "AutoReady can't tell if your match started. It resumes by itself when you're back at the menu or searching. You can also click Resume."); } }
+        public static string ToastUnsureSetup(string game) { return string.Format(T("AutoReady no puede saber si arrancó tu partida. Tocá Reanudar cuando vuelvas a buscar. Configurá {0} para que no vuelva a pasar.", "AutoReady can't tell if your match started. Click Resume when you queue again. Set up {0} so this doesn't happen."), game); }
         public static string ToastSetupTitle(string game) { return string.Format(T("{0} necesita un paso, una sola vez", "{0} needs a one-time setup"), game); }
         public static string ToastSetupText { get { return T("Abrí AutoReady y tocá Configurar.", "Open AutoReady and click Set up."); } }
         public static string ToastRestartTitle(string game) { return string.Format(T("Reiniciá {0}", "Restart {0}"), game); }

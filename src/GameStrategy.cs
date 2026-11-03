@@ -10,6 +10,8 @@ namespace AutoReady
         Gsi Gsi { get; }
         bool Paused { get; }
         void SetPaused(bool paused);
+        // Pausa porque no se sabe si hay una partida en curso: se levanta sola con evidencia nueva (ver SafetyPause).
+        void PauseForSafety();
         void SetState(AppState state);
         void Notify(string title, string text, string button = null, Action onButton = null, Action onClick = null);
         // Se acepto una partida (anota la hora, suena, avisa en la PC y el celular). onClick: que hace tocar el aviso.
@@ -19,6 +21,17 @@ namespace AutoReady
         // Ultima vez que se acepto una partida en esta sesion de juego (MinValue = ninguna o ya empezo la partida).
         DateTime LastAccept { get; }
         void ForgetLastAccept();
+    }
+
+    // La pausa "por seguridad" (sin GSI ni estado de Steam, no se sabe si ya hay partida) se levanta sola cuando llega
+    // evidencia NUEVA de que no estas en partida. Solo cuentan cambios: una lectura vieja o desconocida no.
+    static class SafetyPause
+    {
+        // Steam paso a "menu" o a "buscando".
+        public static bool Lifts(PresenceState steamNow) { return steamNow == PresenceState.Menu || steamNow == PresenceState.Finding; }
+
+        // GSI avisa que la partida termino (volvio al menu).
+        public static bool Lifts(string gsiOld, string gsiNow) { return gsiOld != null && gsiNow == null; }
     }
 
     // Como se vigila y se acepta un juego. Cada juego elige la suya en su GameProfile (Games.cs):

@@ -28,6 +28,7 @@ namespace AutoReady.Tests
             Group("Detector", DetectorTests);
             Group("Perfiles de juegos", ProfileTests);
             Group("Que hacer en cada vuelta", ScanPlanTests);
+            Group("Pausa por seguridad", SafetyPauseTests);
             Group("Estado de Steam", PresenceTests);
             Group("Opciones de lanzamiento de Steam", SteamConfigTests);
             Group("Codigo del celular", TopicTests);
@@ -171,6 +172,17 @@ namespace AutoReady.Tests
             // Sin usar el estado de Steam (apagado o juego sin estado): modo seguro normal.
             p = ScreenStrategy.Plan(false, false, false, false, inMatch, 700);
             Check(!p.Stop && p.Safe && p.Needed == 3 && p.IntervalMs == 700, "sin estado de Steam: modo seguro normal");
+        }
+
+        // Caso real (modo custom): se acepto, la partida no se lleno, volviste al lobby y AutoReady quedo pausado "por
+        // seguridad". La pausa se levanta con evidencia nueva de que no estas en partida, nunca con datos viejos.
+        static void SafetyPauseTests()
+        {
+            Check(SafetyPause.Lifts(PresenceState.Menu) && SafetyPause.Lifts(PresenceState.Finding), "Steam: menu o buscando levanta la pausa");
+            Check(!SafetyPause.Lifts(PresenceState.InMatch) && !SafetyPause.Lifts(PresenceState.Unknown), "Steam: en partida o sin dato no la levanta");
+            Check(SafetyPause.Lifts("DOTA_GAMERULES_STATE_POST_GAME", null), "GSI: la partida termino y volvio al menu");
+            Check(!SafetyPause.Lifts(null, "DOTA_GAMERULES_STATE_HERO_SELECTION") && !SafetyPause.Lifts(null, null), "GSI: empezo una partida o no cambio nada");
+            Check(S.ToastUnsure != S.ToastUnsureSetup("Dota 2") && !S.ToastUnsure.Contains("Dota"), "el aviso solo manda a configurar cuando falta el paso");
         }
 
         // ---------- estado de Steam ----------
@@ -573,6 +585,7 @@ namespace AutoReady.Tests
         }
 
         public void SetPaused(bool paused) { Paused = paused; }
+        public void PauseForSafety() { Paused = true; }
         public void SetState(AppState state) { State = state; }
         public void Notify(string title, string text, string button = null, Action onButton = null, Action onClick = null) { }
         public void MatchAccepted(GameProfile game, string how, Action onClick = null) { Accepted++; lastAccept = DateTime.Now; }

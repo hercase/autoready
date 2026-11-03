@@ -28,6 +28,7 @@ namespace AutoReady
         string updateMessage;
 
         volatile bool paused;
+        volatile bool pausedForSafety;   // la pausa la puso la app (no se sabia si habia partida), no el usuario
         volatile bool installWhenIdle;   // actualizacion automatica esperando el menu (o que se cierre el juego)
         volatile bool running = true;
         AppState state = AppState.Starting;
@@ -81,10 +82,12 @@ namespace AutoReady
             foreach (GameProfile g in GameProfile.All) gsi.InstallConfig(g);
             gsi.Start();
             gsi.StateChanged += MatchStateChanged;
+            gsi.StateChanged += (g, old, now) => { if (SafetyPause.Lifts(old, now)) ResumeFromSafetyPause("GSI: volvio al menu"); };
             Presence.Changed += (old, now, text) =>
             {
                 GameStrategy a = active;
                 if (a != null) a.OnPresenceChanged(old, now, text);
+                if (SafetyPause.Lifts(now)) ResumeFromSafetyPause("Steam: " + now);
                 PushStatus();
             };
 
@@ -124,8 +127,23 @@ namespace AutoReady
 
         public Config Cfg { get { return cfg; } }
 
+        public void PauseForSafety()
+        {
+            SetPaused(true);
+            pausedForSafety = true;
+        }
+
+        // Evidencia nueva de que no estas en partida: la pausa que puso la app se levanta sola. Una pausa tuya no.
+        void ResumeFromSafetyPause(string why)
+        {
+            if (!paused || !pausedForSafety) return;
+            Log.Write("Reanudo solo (" + why + ")");
+            ui.Post(() => { if (pausedForSafety) SetPaused(false); });
+        }
+
         public void SetPaused(bool value)
         {
+            pausedForSafety = false;
             paused = value;
             GameStrategy current = active;
             if (current != null) current.ResetDetection();
