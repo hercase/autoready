@@ -192,6 +192,9 @@ namespace AutoReady.Tests
             GameProfile d = GameProfile.Dota2;
             Check(Presence.Classify("Finding A Match", d) == PresenceState.Finding, "buscando partida");
             Check(Presence.Classify("Main Menu", d) == PresenceState.Menu, "menu");
+            // Caso real: buscando un modo custom, Steam muestra "<modo> + Lobby". No es una partida: el popup puede aparecer.
+            Check(Presence.Classify("OVERTHROW 3.0 SERVERS + Lobby", d) == PresenceState.Finding, "lobby de un modo custom = buscando");
+            Check(Presence.Classify("Turbo: Lvl 27 Phantom Assassin", d) == PresenceState.InMatch, "una partida sigue siendo partida");
             Check(Presence.Classify("Playing Ranked: Pudge", d) == PresenceState.InMatch, "cualquier otro estado = en partida");
             Check(Presence.Classify("", d) == PresenceState.Unknown && Presence.Classify(null, d) == PresenceState.Unknown, "sin estado = desconocido");
 

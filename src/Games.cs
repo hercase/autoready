@@ -43,7 +43,8 @@ namespace AutoReady
             GsiLaunchOption = "-gamestateintegration",
             AcceptWithEnter = true,
             // Textos oficiales: game/dota/pak01_dir/resource/localization/richpresence_english.txt
-            PresenceFinding = new[] { "Finding A Match" },
+            // "<modo custom> + Lobby": buscando o en el lobby de un juego personalizado (todavia no hay partida).
+            PresenceFinding = new[] { "Finding A Match", "+ Lobby" },
             PresenceMenu = new[] { "Main Menu" },
             // Boton ACCEPT turquesa: H ~154, S ~0.36, V ~0.35 (medido en el boton real).
             DefaultDetector = () => new Detector.Settings(),
