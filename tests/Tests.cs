@@ -340,6 +340,7 @@ namespace AutoReady.Tests
             public void SetPhone(bool on) { }
             public void SetNotifyOnly(bool on) { }
             public bool SetDiscord(string url) { return true; }
+            public bool SetMicSound(bool on) { return true; }
             public void FixProtection(GameProfile game) { }
             public string LaunchOptionsWithProtection(GameProfile game) { return ""; }
             public void SendTestPush(Action<bool> done) { }
@@ -545,7 +546,14 @@ namespace AutoReady.Tests
             Check(Notifier.JsonString("a\"b\\c\ná") == "\"a\\\"b\\\\c\\u000a\\u00e1\"", "el texto va escapado como JSON");
             Check(S.DiscordAccepted("Dota 2", "").Contains("Dota 2") && !S.DiscordAccepted("Dota 2", "").Contains("{") && S.DiscordAccepted("Dota 2", "Keis").Contains("Keis"), "aviso de Discord con y sin nombre");
 
+            // Cable de audio virtual: se reconoce por el nombre (winmm lo corta a 31 caracteres).
+            Check(Sounds.IsCableName("CABLE Input (VB-Audio Virtual C") && Sounds.IsCableName("Voicemeeter Input (VB-Audio Voi"), "se reconoce VB-Cable y Voicemeeter");
+            Check(!Sounds.IsCableName("Altavoces (Realtek High Definition Audio)") && !Sounds.IsCableName("CABLE Output (VB-Audio Virtual C") && !Sounds.IsCableName(null), "los parlantes o la entrada del cable no cuentan");
+            Check(Sounds.FindCable() >= -1, "listar los dispositivos de audio no falla");
+            Check(S.MicSoundMissing.Contains("VB-Cable"), "el aviso sin cable nombra VB-Cable");
+
             Config d = Config.Defaults();
+            Check(!d.MicSound, "de fabrica: el sonido por el micro esta apagado");
             Check(!d.NotifyOnly && d.AcceptedTotal == 0, "de fabrica: acepta solo y el contador en cero");
             Check(d.DiscordWebhook == "", "de fabrica: Discord apagado");
             Check(S.NotifyOnlyTitle.Length > 0 && S.ToastFailText("Dota 2").Contains("Dota 2") && S.ToastFoundTitle("CS2").Contains("CS2"), "textos de los avisos nuevos");
