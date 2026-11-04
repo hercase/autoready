@@ -30,27 +30,21 @@
   <a href="https://hercase.github.io/autoready/"><b>hercase.github.io/autoready</b></a> · <a href="README.es.md">Leer en español</a>
 </p>
 
-<table>
-  <tr>
-    <td valign="top">
-      <h3>How it works</h3>
-      <ol>
-        <li><b>Queue up</b> in your game.</li>
-        <li><b>Step away.</b> AutoReady keeps an eye on the game.</li>
-        <li>When the match pops, it <b>clicks Accept</b> and lets you know with a sound, a Windows notification and, if you want, your phone.</li>
-      </ol>
-      <h3>Why it's safe</h3>
-      <ul>
-        <li><b>It never clicks during a match.</b> Your Steam status and Valve's official Game State Integration tell it when you're playing.</li>
-        <li><b>It doesn't touch the game.</b> No memory reading, no injection, no modified game files.</li>
-        <li><b>No accounts, ads or telemetry.</b> Open source, and it only goes online for what's listed in the <a href="PRIVACY.md">privacy policy</a>.</li>
-      </ul>
-    </td>
-    <td width="290" align="center" valign="top">
-      <img src="assets/panel-en.png" width="270" alt="The AutoReady panel: main switch, pause hotkey, sound and phone notifications">
-    </td>
-  </tr>
-</table>
+## How it works
+
+1. **Queue up** in your game.
+2. **Step away.** AutoReady keeps an eye on the game.
+3. When the match pops, it **clicks Accept** and lets you know with a sound, a Windows notification and, if you want, your phone.
+
+<p align="center">
+  <img src="assets/panel-en.png" width="300" alt="The AutoReady panel: main switch, pause hotkey, sound and phone notifications">
+</p>
+
+## Why it's safe
+
+- **It never clicks during a match.** Your Steam status and Valve's official Game State Integration tell it when you're playing.
+- **It doesn't touch the game.** No memory reading, no injection, no modified game files.
+- **No accounts, ads or telemetry.** Open source, and it only goes online for what's listed in the [privacy policy](PRIVACY.md).
 
 ## Get started
 
@@ -80,11 +74,9 @@ It's in English or Spanish depending on your Windows language.
 
 ## Supported games
 
-| Game | Setup |
-|---|---|
-| **[Dota 2](https://hercase.github.io/autoready/dota-2/)** | Nothing to do. If a one-time step is needed, the panel shows **Set up**: it copies the launch option and opens Dota's properties in Steam so you just paste it. |
-| **[Counter-Strike 2](https://hercase.github.io/autoready/cs2/)** | Nothing to do. Restart CS2 once after installing AutoReady. |
-| **[League of Legends](https://hercase.github.io/autoready/league-of-legends/)** | Nothing to do. AutoReady talks to the League client's local API on your PC (the same one community tools use): it accepts without touching your mouse and does nothing in champ select or in game. |
+- **[Dota 2](https://hercase.github.io/autoready/dota-2/)**: Nothing to do. If a one-time step is needed, the panel shows **Set up**: it copies the launch option and opens Dota's properties in Steam so you just paste it.
+- **[Counter-Strike 2](https://hercase.github.io/autoready/cs2/)**: Nothing to do. Restart CS2 once after installing AutoReady.
+- **[League of Legends](https://hercase.github.io/autoready/league-of-legends/)**: Nothing to do. AutoReady talks to the League client's local API on your PC (the same one community tools use): it accepts without touching your mouse and does nothing in champ select or in game.
 
 Playing something else? **[Ask for your game](https://github.com/hercase/autoready/issues/new?template=game-request.yml)**: it takes a minute, and a screenshot of the match found popup helps a lot.
 

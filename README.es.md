@@ -30,27 +30,21 @@
   <a href="https://hercase.github.io/autoready/"><b>hercase.github.io/autoready</b></a> · <a href="README.md">Read in English</a>
 </p>
 
-<table>
-  <tr>
-    <td valign="top">
-      <h3>Cómo funciona</h3>
-      <ol>
-        <li><b>Buscá partida</b> en tu juego.</li>
-        <li><b>Andá a hacer otra cosa.</b> AutoReady vigila el juego.</li>
-        <li>Cuando aparece la partida, <b>toca Aceptar</b> y te avisa con un sonido, una notificación de Windows y, si querés, en el celular.</li>
-      </ol>
-      <h3>Por qué es seguro</h3>
-      <ul>
-        <li><b>Nunca hace click durante una partida.</b> Tu estado de Steam y la integración oficial de Valve (Game State Integration) le dicen cuándo estás jugando.</li>
-        <li><b>No toca el juego.</b> No lee memoria, no inyecta nada y no modifica archivos del juego.</li>
-        <li><b>Sin cuentas, publicidad ni telemetría.</b> Es de código abierto y solo se conecta a internet para lo que dice la <a href="PRIVACY.md">política de privacidad</a>.</li>
-      </ul>
-    </td>
-    <td width="290" align="center" valign="top">
-      <img src="assets/panel-es.png" width="270" alt="El panel de AutoReady: interruptor principal, tecla de pausa, sonido y avisos al celular">
-    </td>
-  </tr>
-</table>
+## Cómo funciona
+
+1. **Buscá partida** en tu juego.
+2. **Andá a hacer otra cosa.** AutoReady vigila el juego.
+3. Cuando aparece la partida, **toca Aceptar** y te avisa con un sonido, una notificación de Windows y, si querés, en el celular.
+
+<p align="center">
+  <img src="assets/panel-es.png" width="300" alt="El panel de AutoReady: interruptor principal, tecla de pausa, sonido y avisos al celular">
+</p>
+
+## Por qué es seguro
+
+- **Nunca hace click durante una partida.** Tu estado de Steam y la integración oficial de Valve (Game State Integration) le dicen cuándo estás jugando.
+- **No toca el juego.** No lee memoria, no inyecta nada y no modifica archivos del juego.
+- **Sin cuentas, publicidad ni telemetría.** Es de código abierto y solo se conecta a internet para lo que dice la [política de privacidad](PRIVACY.md).
 
 ## Empezar
 
@@ -80,11 +74,9 @@ Está en español o en inglés según el idioma de tu Windows.
 
 ## Juegos compatibles
 
-| Juego | Configuración |
-|---|---|
-| **[Dota 2](https://hercase.github.io/autoready/dota-2/?lang=es)** | Nada. Si hace falta un paso (una sola vez), el panel muestra **Configurar**: copia la opción de lanzamiento y abre las propiedades de Dota en Steam para que solo la pegues. |
-| **[Counter-Strike 2](https://hercase.github.io/autoready/cs2/?lang=es)** | Nada. Reiniciá CS2 una vez después de instalar AutoReady. |
-| **[League of Legends](https://hercase.github.io/autoready/league-of-legends/?lang=es)** | Nada. AutoReady usa la API local del cliente de LoL en tu PC (la misma que usan las herramientas de la comunidad): acepta sin tocar el mouse y no hace nada en la selección de campeones ni en partida. |
+- **[Dota 2](https://hercase.github.io/autoready/dota-2/?lang=es)**: Nada. Si hace falta un paso (una sola vez), el panel muestra **Configurar**: copia la opción de lanzamiento y abre las propiedades de Dota en Steam para que solo la pegues.
+- **[Counter-Strike 2](https://hercase.github.io/autoready/cs2/?lang=es)**: Nada. Reiniciá CS2 una vez después de instalar AutoReady.
+- **[League of Legends](https://hercase.github.io/autoready/league-of-legends/?lang=es)**: Nada. AutoReady usa la API local del cliente de LoL en tu PC (la misma que usan las herramientas de la comunidad): acepta sin tocar el mouse y no hace nada en la selección de campeones ni en partida.
 
 ¿Jugás a otra cosa? **[Pedí tu juego](https://github.com/hercase/autoready/issues/new?template=game-request.yml)**: es un minuto, y una captura del aviso de partida encontrada ayuda mucho.
 
